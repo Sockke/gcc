@@ -39,6 +39,7 @@
 #include <ext/atomicity.h>
 #include <ext/alloc_traits.h>
 #include <debug/debug.h>
+#include <limits>
 
 #if __cplusplus >= 201103L
 #include <initializer_list>
@@ -3721,7 +3722,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CXX11
   {
     const bool __neg = __val < 0;
     const unsigned __uval = __neg ? (unsigned)~__val + 1u : __val;
-    const auto __len = __detail::__to_chars_len(__uval);
+    const auto __len = std::numeric_limits<int>::digits10 + 1;
     string __str(__neg + __len, '-');
     __detail::__to_chars_10_impl(&__str[__neg], __len, __uval);
     return __str;
@@ -3730,7 +3731,7 @@ _GLIBCXX_BEGIN_NAMESPACE_CXX11
   inline string
   to_string(unsigned __val)
   {
-    string __str(__detail::__to_chars_len(__val), '\0');
+    string __str(std::numeric_limits<unsigned>::digits10 + 1;, '\0');
     __detail::__to_chars_10_impl(&__str[0], __str.size(), __val);
     return __str;
   }
